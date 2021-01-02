@@ -1,0 +1,31 @@
+from selenium import webdriver
+from time import sleep
+URL_LINKEDIN = 'https://br.linkedin.com/jobs/ci%C3%AAncia-de-dados-vagas?position=1&pageNum=0'
+
+chrome_path = 'C:\\Users\\dansc\\Desktop\\Teste AWARI\\chromedriver.exe'
+driver = webdriver.Chrome(chrome_path)
+driver.get(URL_LINKEDIN)
+resultados = driver.find_elements_by_class_name('result-card__full-card-link')
+
+lista_descri = []
+
+while True:
+    for i in resultados[len(lista_descri):]:
+        sleep(1)
+        i.click()
+        sleep(1)
+        try:
+            descricao = driver.find_element_by_class_name('description')
+            lista_descri.append(descricao.text)
+        except:
+            pass
+   
+resultados = driver.find_elements_by_class_name('result-card__full-card-link')
+if len(lista_descri) == len (resultados):
+    break
+    
+texto_descriçao = '\n'.join(lista_descri)
+with open("texto_descriçao_vagas.txt",'w') as f:
+    f.write(texto_descriçao)
+driver.quit()
+    
